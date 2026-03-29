@@ -220,18 +220,22 @@ export function GrassReveal() {
 
       let pct: number
       let inPause: boolean
+      let movingRight: boolean
 
       if (elapsed < TOTAL) {
         const t = Math.min(elapsed / DURATION, 1)
         pct = ease(t) * 100
         inPause = elapsed > DURATION
+        movingRight = true
       } else {
         const t = Math.min((elapsed - TOTAL) / DURATION, 1)
         pct = (1 - ease(t)) * 100
         inPause = (elapsed - TOTAL) > DURATION
+        movingRight = false
       }
 
       const moving = !inPause && Math.abs(pct - lastPct) > 0.05
+      const spawnParticles_flag = moving && !movingRight  // Only spawn when moving LEFT
 
       // Resize particle canvas to match the outer container on each frame
       const container = canvasPart.parentElement
@@ -248,8 +252,8 @@ export function GrassReveal() {
       drawWord(ctxP, imgPTopRef.current, wP, hP, pct, 10)
       drawWord(ctxC, imgCTopRef.current, wC, hC, pct, 13)
 
-      // Spawn particles at the cut edge of each word when moving
-      if (moving) {
+      // Spawn particles at the cut edge of each word when moving LEFT
+      if (spawnParticles_flag) {
         // Perfectly: the word canvas fills the top portion of the container
         const pWordEl = canvasP.parentElement
         const cWordEl = canvasC.parentElement
@@ -260,14 +264,14 @@ export function GrassReveal() {
           const scaleY = pWordEl.offsetHeight / hP
           const yOff   = pWordEl.offsetTop
           const edgePts = sampleEdgePoints(pct * wP * 0.01, hP, 10, 40)
-          spawnParticles(particlesRef.current, edgePts, yOff, scaleX, scaleY, moving)
+          spawnParticles(particlesRef.current, edgePts, yOff, scaleX, scaleY, spawnParticles_flag)
         }
         if (cWordEl && container) {
           const scaleX = cWordEl.offsetWidth  / wC
           const scaleY = cWordEl.offsetHeight / hC
           const yOff   = cWordEl.offsetTop
           const edgePts = sampleEdgePoints(pct * wC * 0.01, hC, 13, 40)
-          spawnParticles(particlesRef.current, edgePts, yOff, scaleX, scaleY, moving)
+          spawnParticles(particlesRef.current, edgePts, yOff, scaleX, scaleY, spawnParticles_flag)
         }
       }
 
