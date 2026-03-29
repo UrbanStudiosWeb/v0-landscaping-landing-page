@@ -98,23 +98,27 @@ export function GrassReveal() {
     const ctxC = canvasC.getContext("2d")
     if (!ctxP || !ctxC) return
 
+    // Set canvas internal resolution to match exact image dimensions
+    const wP = dimensionsRef.current.wP
+    const hP = dimensionsRef.current.hP
+    const wC = dimensionsRef.current.wC
+    const hC = dimensionsRef.current.hC
+
+    canvasP.width = wP
+    canvasP.height = hP
+    canvasC.width = wC
+    canvasC.height = hC
+
     let startTime: number | null = null
 
     function drawWord(
       ctx: CanvasRenderingContext2D,
-      canvas: HTMLCanvasElement,
       img: HTMLImageElement | null,
+      w: number,
+      h: number,
       pct: number,
       roughness: number,
     ) {
-      // Always sync canvas internal resolution to its CSS display size
-      const w = canvas.offsetWidth || canvas.width
-      const h = canvas.offsetHeight || canvas.height
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w
-        canvas.height = h
-      }
-
       ctx.clearRect(0, 0, w, h)
       if (!img || img.naturalWidth === 0) return
 
@@ -141,8 +145,8 @@ export function GrassReveal() {
         pct = (1 - ease(t)) * 100
       }
 
-      drawWord(ctxP, canvasP, imgPTopRef.current, pct, 10)
-      drawWord(ctxC, canvasC, imgCTopRef.current, pct, 13)
+      drawWord(ctxP, imgPTopRef.current, wP, hP, pct, 10)
+      drawWord(ctxC, imgCTopRef.current, wC, hC, pct, 13)
 
       rafRef.current = requestAnimationFrame(animate)
     }
@@ -180,10 +184,10 @@ export function GrassReveal() {
         />
       </div>
 
-      {/* ── CRAFTED ── overlapping Perfectly */}
+      {/* ── CRAFTED ── overlapping Perfectly, enlarged 15% */}
       <div
         className="relative w-full"
-        style={{ aspectRatio: "1100 / 300", marginTop: "-10%", marginLeft: "5%" }}
+        style={{ aspectRatio: "1100 / 300", marginTop: "-10%", marginLeft: "5%", transform: "scale(1.15)", transformOrigin: "top left" }}
       >
         <img
           ref={imgCBotRef}
