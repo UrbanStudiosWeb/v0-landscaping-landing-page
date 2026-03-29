@@ -31,16 +31,16 @@ export function HeroSection() {
         <img
           src="/images/hero-landscape.jpg"
           alt="Beautifully manicured lawn and garden"
-          className="w-full h-full object-cover brightness-125"
+          className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-foreground/55" />
+        <div className="absolute inset-0 bg-foreground/35" />
       </div>
 
-      {/* Green gradient overlay — dark on the left, fully gone by ~40% width */}
+      {/* Dark green gradient overlay — angled -25deg, fading out by content edge */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          background: "linear-gradient(to right, oklch(0.28 0.10 145 / 0.82) 0%, oklch(0.28 0.10 145 / 0.50) 20%, oklch(0.28 0.10 145 / 0.15) 35%, transparent 45%)",
+          background: "linear-gradient(-25deg, transparent 40%, oklch(0.18 0.08 145 / 0.25) 55%, oklch(0.15 0.10 145 / 0.65) 75%, oklch(0.12 0.12 145 / 0.88) 100%)",
         }}
       />
 
