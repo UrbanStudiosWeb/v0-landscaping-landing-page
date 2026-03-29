@@ -98,27 +98,28 @@ export function GrassReveal() {
     const ctxC = canvasC.getContext("2d")
     if (!ctxP || !ctxC) return
 
-    const wP = dimensionsRef.current.wP
-    const hP = dimensionsRef.current.hP
-    const wC = dimensionsRef.current.wC
-    const hC = dimensionsRef.current.hC
-
     let startTime: number | null = null
 
     function drawWord(
       ctx: CanvasRenderingContext2D,
+      canvas: HTMLCanvasElement,
       img: HTMLImageElement | null,
-      w: number,
-      h: number,
       pct: number,
       roughness: number,
     ) {
+      // Always sync canvas internal resolution to its CSS display size
+      const w = canvas.offsetWidth || canvas.width
+      const h = canvas.offsetHeight || canvas.height
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w
+        canvas.height = h
+      }
+
       ctx.clearRect(0, 0, w, h)
       if (!img || img.naturalWidth === 0) return
 
-      const cutX = pct * w * 0.01  // pct is 0-100
+      const cutX = pct * w * 0.01
 
-      // Clip to jagged polygon and draw image
       ctx.save()
       const poly = buildJaggedClipPolygon(cutX, w, h, roughness, 40)
       ctx.clip(poly)
@@ -140,9 +141,8 @@ export function GrassReveal() {
         pct = (1 - ease(t)) * 100
       }
 
-      // Draw top-layer images with jagged clip
-      drawWord(ctxP, imgPTopRef.current, wP, hP, pct, 10)
-      drawWord(ctxC, imgCTopRef.current, wC, hC, pct, 13)
+      drawWord(ctxP, canvasP, imgPTopRef.current, pct, 10)
+      drawWord(ctxC, canvasC, imgCTopRef.current, pct, 13)
 
       rafRef.current = requestAnimationFrame(animate)
     }
@@ -154,15 +154,15 @@ export function GrassReveal() {
   }, [])
 
   return (
-    <div className="flex flex-col items-start gap-1 select-none" aria-label="Perfectly Crafted">
+    <div className="flex flex-col items-start select-none" style={{ maxWidth: 380 }} aria-label="Perfectly Crafted">
       {/* ── PERFECTLY ── */}
-      <div className="relative" style={{ width: dimensionsRef.current.wP, height: dimensionsRef.current.hP }}>
+      <div className="relative w-full" style={{ aspectRatio: "980 / 270" }}>
         <img
           ref={imgPBotRef}
           src="/images/perfectly_bottom.webp"
           alt=""
           aria-hidden
-          className="absolute inset-0 w-full h-full pointer-events-none"
+          className="absolute inset-0 w-full h-full object-contain object-left pointer-events-none"
           draggable={false}
         />
         <canvas
@@ -182,15 +182,15 @@ export function GrassReveal() {
 
       {/* ── CRAFTED ── overlapping Perfectly */}
       <div
-        className="relative"
-        style={{ width: dimensionsRef.current.wC, height: dimensionsRef.current.hC, marginTop: "-36px", marginLeft: "20px" }}
+        className="relative w-full"
+        style={{ aspectRatio: "1100 / 300", marginTop: "-10%", marginLeft: "5%" }}
       >
         <img
           ref={imgCBotRef}
           src="/images/crafted_bottom.webp"
           alt=""
           aria-hidden
-          className="absolute inset-0 w-full h-full pointer-events-none"
+          className="absolute inset-0 w-full h-full object-contain object-left pointer-events-none"
           draggable={false}
         />
         <canvas
