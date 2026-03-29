@@ -4,6 +4,29 @@ import { useEffect, useRef } from "react"
 import { ArrowRight, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
+const shimmerStyle = `
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .text-shimmer {
+    background: linear-gradient(
+      90deg,
+      #c8a84b 0%,
+      #f5e08a 30%,
+      #e8c060 48%,
+      #fff8d0 54%,
+      #e8c060 60%,
+      #c8a84b 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3.5s linear infinite;
+  }
+`
+
 export function HeroSection() {
   const bgRef = useRef<HTMLDivElement>(null)
 
@@ -21,6 +44,7 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: shimmerStyle }} />
       {/* Background Image — oversized so parallax travel doesn't reveal edges */}
       <div
         ref={bgRef}
@@ -47,7 +71,7 @@ export function HeroSection() {
           {/* Headline */}
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight text-balance mb-6">
             Your Lawn, <br />
-            <span className="text-accent">Perfectly</span> Crafted.
+            <span className="text-shimmer">Perfectly Crafted.</span>
           </h1>
 
           <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10">

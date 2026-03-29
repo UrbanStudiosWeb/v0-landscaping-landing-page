@@ -14,20 +14,9 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener("scroll", onScroll)
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-card/95 backdrop-blur-sm shadow-sm border-b border-border" : "bg-transparent"
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-sm shadow-sm border-b border-border">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-18 py-4">
           {/* Logo */}
@@ -36,10 +25,10 @@ export function Navbar() {
               <Leaf className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="flex flex-col leading-none">
-              <span className={`font-serif text-lg font-bold ${scrolled ? "text-foreground" : "text-white"}`}>
+              <span className="font-serif text-lg font-bold text-foreground">
                 GreenCraft
               </span>
-              <span className={`text-[10px] tracking-widest uppercase ${scrolled ? "text-muted-foreground" : "text-white/70"}`}>
+              <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
                 Landscaping
               </span>
             </div>
@@ -51,9 +40,7 @@ export function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium tracking-wide transition-colors hover:text-primary ${
-                  scrolled ? "text-foreground" : "text-white/90"
-                }`}
+                className="text-sm font-medium tracking-wide transition-colors text-foreground hover:text-primary"
               >
                 {link.label}
               </a>
@@ -72,7 +59,7 @@ export function Navbar() {
 
           {/* Mobile Toggle */}
           <button
-            className={`md:hidden p-2 rounded-md ${scrolled ? "text-foreground" : "text-white"}`}
+            className="md:hidden p-2 rounded-md text-foreground"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle navigation menu"
           >
