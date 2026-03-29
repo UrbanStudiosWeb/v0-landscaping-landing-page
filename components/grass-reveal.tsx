@@ -187,7 +187,7 @@ export function GrassReveal() {
       {/* ── CRAFTED ── overlapping Perfectly */}
       <div
         className="relative w-full"
-        style={{ aspectRatio: "1100 / 300", marginTop: "-10%", marginLeft: "5%" }}
+        style={{ aspectRatio: "1100 / 350", marginTop: "-5%", marginLeft: "5%" }}
       >
         <img
           ref={imgCBotRef}
