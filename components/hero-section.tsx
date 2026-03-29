@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import { ArrowRight, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { GrassReveal } from "@/components/grass-reveal"
 
 export function HeroSection() {
   const bgRef = useRef<HTMLDivElement>(null)
@@ -45,24 +46,12 @@ export function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
-            Your Lawn, <br />
-            <span
-              className="inline-block font-serif font-bold drop-shadow-lg"
-              style={{
-                backgroundImage: "url('/images/grass-texture.jpg')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                filter: "brightness(1.1) contrast(1.05)",
-                textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
-              }}
-            >
-              Perfectly Crafted.
-            </span>
-          </h1>
+          <div className="mb-6">
+            <p className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-2">
+              Your Lawn,
+            </p>
+            <GrassReveal />
+          </div>
 
           <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10">
             GreenCraft Landscaping transforms ordinary outdoor spaces into stunning, sustainable
