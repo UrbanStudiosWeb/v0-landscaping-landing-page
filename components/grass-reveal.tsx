@@ -60,9 +60,51 @@ export function GrassReveal() {
   const canvasCRef   = useRef<HTMLCanvasElement>(null)  // Crafted canvas
   const imgPTopRef   = useRef<HTMLImageElement>(null)
   const imgCTopRef   = useRef<HTMLImageElement>(null)
+  const imgPBotRef   = useRef<HTMLImageElement>(null)
+  const imgCBotRef   = useRef<HTMLImageElement>(null)
   const rafRef       = useRef<number | null>(null)
   const particlesRef = useRef<Particle[]>([])
   const lastPctRef   = useRef<number>(0)
+  const dimensionsRef = useRef({ wP: 420, hP: 110, wC: 580, hC: 148 })
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      // Get actual image dimensions after they load
+      if (imgPBotRef.current?.naturalWidth) {
+        dimensionsRef.current.wP = imgPBotRef.current.naturalWidth
+        dimensionsRef.current.hP = imgPBotRef.current.naturalHeight
+      }
+      if (imgCBotRef.current?.naturalWidth) {
+        dimensionsRef.current.wC = imgCBotRef.current.naturalWidth
+        dimensionsRef.current.hC = imgCBotRef.current.naturalHeight
+      }
+
+      // Resize canvases to match
+      if (canvasPRef.current) {
+        canvasPRef.current.width = dimensionsRef.current.wP
+        canvasPRef.current.height = dimensionsRef.current.hP
+      }
+      if (canvasCRef.current) {
+        canvasCRef.current.width = dimensionsRef.current.wC
+        canvasCRef.current.height = dimensionsRef.current.hC
+      }
+    }
+
+    // Load and check dimensions
+    imgPBotRef.current?.addEventListener("load", updateDimensions)
+    imgCBotRef.current?.addEventListener("load", updateDimensions)
+    imgPTopRef.current?.addEventListener("load", updateDimensions)
+    imgCTopRef.current?.addEventListener("load", updateDimensions)
+
+    updateDimensions()
+
+    return () => {
+      imgPBotRef.current?.removeEventListener("load", updateDimensions)
+      imgCBotRef.current?.removeEventListener("load", updateDimensions)
+      imgPTopRef.current?.removeEventListener("load", updateDimensions)
+      imgCTopRef.current?.removeEventListener("load", updateDimensions)
+    }
+  }, [])
 
   useEffect(() => {
     const canvasP = canvasPRef.current
@@ -73,10 +115,10 @@ export function GrassReveal() {
     const ctxC = canvasC.getContext("2d")
     if (!ctxP || !ctxC) return
 
-    const wP = canvasP.width
-    const hP = canvasP.height
-    const wC = canvasC.width
-    const hC = canvasC.height
+    const wP = dimensionsRef.current.wP
+    const hP = dimensionsRef.current.hP
+    const wC = dimensionsRef.current.wC
+    const hC = dimensionsRef.current.hC
 
     let startTime: number | null = null
     const particles = particlesRef.current
@@ -215,9 +257,10 @@ export function GrassReveal() {
       aria-label="Perfectly Crafted"
     >
       {/* ── PERFECTLY ── */}
-      <div className="relative" style={{ width: 420, height: 110 }}>
+      <div className="relative" style={{ width: dimensionsRef.current.wP, height: dimensionsRef.current.hP }}>
         {/* Bottom: mowed/trimmed — always fully visible */}
         <img
+          ref={imgPBotRef}
           src="/images/perfectly_bottom.webp"
           alt=""
           aria-hidden
@@ -227,8 +270,6 @@ export function GrassReveal() {
         {/* Top: wild grass rendered onto canvas with jagged clip */}
         <canvas
           ref={canvasPRef}
-          width={420}
-          height={110}
           className="absolute inset-0 w-full h-full pointer-events-none"
           aria-hidden
         />
@@ -246,9 +287,10 @@ export function GrassReveal() {
       {/* ── CRAFTED ── overlapping Perfectly */}
       <div
         className="relative"
-        style={{ width: 580, height: 148, marginTop: "-36px", marginLeft: "20px" }}
+        style={{ width: dimensionsRef.current.wC, height: dimensionsRef.current.hC, marginTop: "-36px", marginLeft: "20px" }}
       >
         <img
+          ref={imgCBotRef}
           src="/images/crafted_bottom.webp"
           alt=""
           aria-hidden
@@ -257,8 +299,6 @@ export function GrassReveal() {
         />
         <canvas
           ref={canvasCRef}
-          width={580}
-          height={148}
           className="absolute inset-0 w-full h-full pointer-events-none"
           aria-hidden
         />
