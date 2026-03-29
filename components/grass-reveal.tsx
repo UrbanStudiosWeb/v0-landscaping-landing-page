@@ -166,7 +166,7 @@ export function GrassReveal() {
           src="/images/perfectly_bottom.webp"
           alt=""
           aria-hidden
-          className="absolute inset-0 w-full h-full object-contain object-left pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover object-left pointer-events-none"
           draggable={false}
         />
         <canvas
@@ -184,17 +184,17 @@ export function GrassReveal() {
         />
       </div>
 
-      {/* ── CRAFTED ── overlapping Perfectly, enlarged 15% */}
+      {/* ── CRAFTED ── overlapping Perfectly */}
       <div
         className="relative w-full"
-        style={{ aspectRatio: "1100 / 300", marginTop: "-10%", marginLeft: "5%", transform: "scale(1.15)", transformOrigin: "top left" }}
+        style={{ aspectRatio: "1100 / 300", marginTop: "-10%", marginLeft: "5%" }}
       >
         <img
           ref={imgCBotRef}
           src="/images/crafted_bottom.webp"
           alt=""
           aria-hidden
-          className="absolute inset-0 w-full h-full object-contain object-left pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover object-left pointer-events-none"
           draggable={false}
         />
         <canvas
