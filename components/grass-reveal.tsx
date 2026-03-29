@@ -82,8 +82,8 @@ export function GrassReveal() {
         </div>
       </div>
 
-      {/* ── CRAFTED ── larger word */}
-      <div className="relative" style={{ width: 580, height: 148 }}>
+      {/* ── CRAFTED ── larger word, positioned to overlap Perfectly */}
+      <div className="relative" style={{ width: 580, height: 148, marginTop: "-36px", marginLeft: "20px" }}>
         {/* Bottom layer */}
         <img
           src="/images/crafted_bottom.webp"

@@ -47,7 +47,7 @@ export function HeroSection() {
 
           {/* Headline */}
           <div className="mb-6">
-            <p className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-2">
+            <p className="font-serif text-3xl md:text-4xl lg:text-5xl font-light text-green-100/80 leading-tight mb-3 italic">
               Your Lawn,
             </p>
             <GrassReveal />
