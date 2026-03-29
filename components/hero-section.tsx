@@ -31,10 +31,13 @@ export function HeroSection() {
         <img
           src="/images/hero-landscape.jpg"
           alt="Beautifully manicured lawn and garden"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover brightness-125"
         />
         <div className="absolute inset-0 bg-foreground/55" />
       </div>
+
+      {/* Green gradient overlay fading from left */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-primary/40 via-primary/15 to-transparent" />
 
       {/* Content — left aligned */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-24">
@@ -47,7 +50,7 @@ export function HeroSection() {
 
           {/* Headline */}
           <div className="mb-6">
-            <p className="font-serif text-3xl md:text-4xl lg:text-5xl font-light text-green-100/80 leading-tight mb-3 italic">
+            <p className="font-serif text-3xl md:text-4xl lg:text-5xl font-light text-green-100/80 leading-tight mb-6 italic ml-[15px]">
               Your Lawn,
             </p>
             <GrassReveal />
