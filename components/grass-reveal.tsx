@@ -112,7 +112,14 @@ export function GrassReveal() {
       roughness: number,
     ) {
       ctx.clearRect(0, 0, w, h)
-      if (!img) return
+      if (!img || img.naturalWidth === 0) return
+
+      // Calculate scaling to fit the image into the canvas without stretching
+      const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight)
+      const scaledW = img.naturalWidth * scale
+      const scaledH = img.naturalHeight * scale
+      const offsetX = (w - scaledW) / 2
+      const offsetY = (h - scaledH) / 2
 
       const cutX = pct * w * 0.01  // pct is 0-100
 
@@ -120,7 +127,7 @@ export function GrassReveal() {
       ctx.save()
       const poly = buildJaggedClipPolygon(cutX, w, h, roughness, 40)
       ctx.clip(poly)
-      ctx.drawImage(img, 0, 0, w, h)
+      ctx.drawImage(img, offsetX, offsetY, scaledW, scaledH)
       ctx.restore()
     }
 
