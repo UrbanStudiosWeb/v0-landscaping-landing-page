@@ -1,11 +1,32 @@
+"use client"
+
+import { useEffect, useRef } from "react"
 import { ArrowRight, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
+  const bgRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!bgRef.current) return
+      const scrollY = window.scrollY
+      // Move the bg at 40% of scroll speed for a parallax feel
+      bgRef.current.style.transform = `translateY(${scrollY * 0.4}px)`
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+      {/* Background Image — oversized so parallax travel doesn't reveal edges */}
+      <div
+        ref={bgRef}
+        className="absolute inset-0 z-0 will-change-transform"
+        style={{ top: "-20%", bottom: "-20%", left: 0, right: 0 }}
+      >
         <img
           src="/images/hero-landscape.jpg"
           alt="Beautifully manicured lawn and garden"
@@ -14,9 +35,9 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-foreground/55" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-20">
-        <div className="max-w-3xl">
+      {/* Content — left aligned */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-24">
+        <div className="max-w-2xl">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-medium tracking-widest uppercase px-4 py-2 rounded-full mb-8">
             <Star className="w-3 h-3 fill-accent text-accent" />
@@ -29,7 +50,7 @@ export function HeroSection() {
             <span className="text-accent">Perfectly</span> Crafted.
           </h1>
 
-          <p className="text-white/80 text-lg md:text-xl leading-relaxed max-w-xl mb-10">
+          <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-10">
             GreenCraft Landscaping transforms ordinary outdoor spaces into stunning, sustainable
             landscapes — backed by 15 years of expertise and a passion for the craft.
           </p>
@@ -71,9 +92,6 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-
-      {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-10" />
     </section>
   )
 }
