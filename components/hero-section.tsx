@@ -36,8 +36,13 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-foreground/55" />
       </div>
 
-      {/* Green gradient overlay fading from left */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-primary/40 via-primary/15 to-transparent" />
+      {/* Green gradient overlay — dark on the left, fully gone by ~40% width */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(to right, oklch(0.28 0.10 145 / 0.82) 0%, oklch(0.28 0.10 145 / 0.50) 20%, oklch(0.28 0.10 145 / 0.15) 35%, transparent 45%)",
+        }}
+      />
 
       {/* Content — left aligned */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-24">
