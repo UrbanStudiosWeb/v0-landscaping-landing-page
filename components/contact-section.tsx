@@ -98,7 +98,7 @@ export function ContactSection() {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} name="contact" data-netlify="true" className="space-y-5">
                 <div>
                   <h3 className="font-serif text-2xl font-bold text-foreground mb-1">
                     Request a Free Quote
