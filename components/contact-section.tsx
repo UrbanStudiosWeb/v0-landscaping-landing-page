@@ -34,10 +34,27 @@ const contactInfo = [
 
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSubmitted(true)
+    setSubmitting(true)
+
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
+    try {
+      await fetch("/__forms.html", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
+      })
+      setSubmitted(true)
+    } catch (error) {
+      console.error("Form submission error:", error)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -99,6 +116,7 @@ export function ContactSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} name="contact" data-netlify="true" className="space-y-5">
+                <input type="hidden" name="form-name" value="contact" />
                 <div>
                   <h3 className="font-serif text-2xl font-bold text-foreground mb-1">
                     Request a Free Quote
@@ -113,13 +131,13 @@ export function ContactSection() {
                     <label className="block text-xs font-medium text-muted-foreground mb-1.5 uppercase tracking-wide">
                       First Name
                     </label>
-                    <Input placeholder="John" required className="bg-background border-border" />
+                    <Input name="firstName" placeholder="John" required className="bg-background border-border" />
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-muted-foreground mb-1.5 uppercase tracking-wide">
                       Last Name
                     </label>
-                    <Input placeholder="Smith" required className="bg-background border-border" />
+                    <Input name="lastName" placeholder="Smith" required className="bg-background border-border" />
                   </div>
                 </div>
 
@@ -128,6 +146,7 @@ export function ContactSection() {
                     Email Address
                   </label>
                   <Input
+                    name="email"
                     type="email"
                     placeholder="john@example.com"
                     required
@@ -140,6 +159,7 @@ export function ContactSection() {
                     Phone Number
                   </label>
                   <Input
+                    name="phone"
                     type="tel"
                     placeholder="(908) 555-0000"
                     className="bg-background border-border"
@@ -151,6 +171,7 @@ export function ContactSection() {
                     Service Needed
                   </label>
                   <select
+                    name="service"
                     className="w-full h-9 rounded-md border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                     required
                   >
@@ -169,6 +190,7 @@ export function ContactSection() {
                     Message (Optional)
                   </label>
                   <textarea
+                    name="message"
                     rows={3}
                     placeholder="Tell us about your property or any specific requests..."
                     className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
@@ -177,9 +199,10 @@ export function ContactSection() {
 
                 <Button
                   type="submit"
+                  disabled={submitting}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full h-11 font-semibold"
                 >
-                  Send My Request
+                  {submitting ? "Sending..." : "Send My Request"}
                 </Button>
               </form>
             )}
